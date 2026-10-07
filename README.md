@@ -134,26 +134,3 @@ PULL_TIMEOUT_MS=
 SSE_MAX_AGE_MS=
 ```
 
-## Architecture
-
-The application uses an asynchronous pull architecture:
-
-```text
-React Dashboard
-       │
-       ├── REST ──────────────► Express API
-       │                            │
-       │                            ├── MongoDB Atlas
-       │                            │
-       │                            └── Mock BSE API
-       │                                  │
-       │                                  └── Webhook
-       │                                         │
-       ◄──────────── SSE ────────────────────────┘
-```
-
-The Mock BSE API acknowledges a pull immediately with a `202` response instead of keeping an HTTP connection open for the full 15-minute delay. Once the pull completes, the Mock BSE API sends the trade data to the backend through a webhook.
-
-The backend persists the trades in MongoDB Atlas and pushes a completion event to connected dashboards through Server-Sent Events (SSE).
-
-This keeps long-running work outside the request/response connection and allows the dashboard to update without page refreshes, polling, cron jobs, or schedulers.
