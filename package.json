@@ -1,0 +1,9 @@
+{
+  "name": "bse-trades",
+  "private": true,
+  "scripts": {
+    "install:all": "npm i && npm i --prefix mock-bse && npm i --prefix backend && npm i --prefix frontend",
+    "dev": "concurrently -n bse,api,web -c yellow,cyan,green \"npm run dev --prefix mock-bse\" \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\""
+  },
+  "devDependencies": { "concurrently": "^9.0.0" }
+}
